@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import setFetch from "./setFetchData";
+import PostsReducer from "./PostsReducer";
 
 const reducer = combineReducers({
-  setFetch,
+  PostsReducer,
 });
 
 export default reducer;

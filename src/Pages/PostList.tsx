@@ -1,27 +1,19 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getFetchData } from "../redux/actions/actionCreator";
-import Spinner from "react-bootstrap/Spinner";
+import { useDispatch } from "react-redux";
+import { getPosts } from "../redux/actions/actionCreator";
+
+import Posts from "../components/Posts";
 
 const PostList = () => {
-  const { data } = useSelector((state: any) => state?.setFetch);
-
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getFetchData());
+    dispatch(getPosts());
   }, [dispatch]);
 
-  // if (!data || data.lenght === 0) return <Spinner />;
   return (
     <>
-      {!data || data.lenght === 0 ? (
-        <Spinner animation="border" variant="primary" />
-      ) : (
-        data.map((item: any, index: any) => {
-          return <li key={index}>{item.body}</li>;
-        })
-      )}
+      <Posts />
     </>
   );
 };

@@ -1,21 +1,26 @@
-import { takeEvery, put, call } from "redux-saga/effects";
-import { fetchData } from "../../api/index";
-import { GET_FETCH_DATA } from "../contstants";
-import { setFetchData } from "../actions/actionCreator";
+import { put, call, takeLatest } from "redux-saga/effects";
+// import { fetchPosts } from "../../api/index";
+import { GET_POSTS } from "../contstants";
+import { getPostsError, getPostsSuccess } from "../actions/actionCreator";
+import { getPosts } from "../../helpers/backend_helper";
 
 const delay = (time: number) =>
   new Promise((resolve, reject) => {
     setTimeout(resolve, time * 1000);
   });
 
-export function* workerSaga(): any {
-  yield delay(2);
-  const data = yield call(fetchData);
-  yield put(setFetchData(data));
+function* workerSaga(): any {
+  try {
+    yield delay(2);
+    const response = yield call(getPosts);
+    yield put(getPostsSuccess(response));
+  } catch (error) {
+    yield put(getPostsError(error.response));
+  }
 }
 
-export function* watchSaga() {
-  yield takeEvery(GET_FETCH_DATA, workerSaga);
+function* watchSaga() {
+  yield takeLatest(GET_POSTS, workerSaga);
 }
 
 export default function* rootSaga() {

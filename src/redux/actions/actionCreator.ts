@@ -1,10 +1,19 @@
-import { GET_FETCH_DATA, SET_FETCH_DATA } from "../contstants";
+import { GET_POSTS, GET_POSTS_SUCCESS, GET_POSTS_ERROR } from "../contstants";
 
-export const getFetchData = () => ({
-  type: GET_FETCH_DATA,
+export const getPosts = () => ({
+  type: GET_POSTS,
 });
 
-export const setFetchData = (payload: any) => ({
-  type: SET_FETCH_DATA,
-  payload,
-});
+export const getPostsSuccess = (posts: any) => {
+  return {
+    type: GET_POSTS_SUCCESS,
+    payload: posts,
+  };
+};
+
+export const getPostsError = (error: boolean) => {
+  return {
+    type: GET_POSTS_ERROR,
+    payload: error,
+  };
+};
