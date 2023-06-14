@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
-import { Card, Container, Row, Col } from "react-bootstrap";
+import { Card, Container, Button } from "react-bootstrap";
 const Posts: React.FC = () => {
   const { posts, loadPosts } = useSelector((state: any) => state.PostsReducer);
 
@@ -13,14 +13,18 @@ const Posts: React.FC = () => {
         ) : (
           posts.map((item: any) => {
             return (
-              <Col key={item.id}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{item.title}</Card.Title>
-                    <Card.Text>{item.body}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
+              <Card key={item.id} className="mb-3">
+                <Card.Img
+                  style={{ width: "6rem" }}
+                  variant="top"
+                  src={process.env.PUBLIC_URL + "/avatar.svg"}
+                />
+                <Card.Body>
+                  <Card.Title>{item.title}</Card.Title>
+                  <Card.Text>{item.body}</Card.Text>
+                  <Button variant="primary">Показать комментарии</Button>
+                </Card.Body>
+              </Card>
             );
           })
         )}

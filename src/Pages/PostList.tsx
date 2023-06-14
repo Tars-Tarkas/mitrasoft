@@ -5,11 +5,19 @@ import { getPosts } from "../redux/actions/actionCreator";
 
 import Posts from "../components/Posts";
 
-const PostList = () => {
+type PostListType = {
+  title: string;
+};
+
+const PostList = ({ title }: PostListType) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPosts());
   }, [dispatch]);
+
+  useEffect(() => {
+    document.title = title;
+  });
 
   return (
     <>

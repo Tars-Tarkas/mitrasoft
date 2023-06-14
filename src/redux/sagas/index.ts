@@ -11,7 +11,7 @@ const delay = (time: number) =>
 
 function* workerSaga(): any {
   try {
-    yield delay(2);
+    yield delay(0);
     const response = yield call(getPosts);
     yield put(getPostsSuccess(response));
   } catch (error) {
