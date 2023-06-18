@@ -5,13 +5,18 @@ import {
   GET_COMMENTS,
   GET_COMMENTS_SUCCESS,
   GET_COMMENTS_ERROR,
+  GET_USER,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR,
 } from "../contstants";
 
 const initialState = {
   posts: [],
   comments: [],
+  users: [],
   loadingPosts: false,
   loadingComments: false,
+  loadingUsers: false,
   error: false,
 };
 
@@ -40,10 +45,22 @@ const PostsReducer = (state = initialState, { type, payload }: any) => {
     case GET_COMMENTS_ERROR:
       state = { ...state, error: true, loadingComments: false };
       break;
+
+    case GET_USER:
+      state = { ...state, loadingUsers: true };
+      break;
+    case GET_USER_SUCCESS:
+      state = { ...state, users: payload, loadingUsers: false };
+      console.log(state);
+      break;
+    case GET_USER_ERROR:
+      state = { ...state, error: true, loadingUsers: false };
+      break;
     default:
       state = { ...state };
       break;
   }
+
   return state;
 };
 
