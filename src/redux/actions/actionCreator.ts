@@ -10,11 +10,13 @@ import {
   GET_USER_ERROR,
 } from "../contstants";
 
+import { PostsType, CommentsType } from "../../types/types";
+
 export const getPosts = () => ({
   type: GET_POSTS,
 });
 
-export const getPostsSuccess = (posts: any) => {
+export const getPostsSuccess = (posts: PostsType) => {
   return {
     type: GET_POSTS_SUCCESS,
     payload: posts,
@@ -32,7 +34,7 @@ export const getComments = (postId: number) => ({
   payload: postId,
 });
 
-export const getCommentsSuccess = (comments: any) => {
+export const getCommentsSuccess = (comments: CommentsType) => {
   return {
     type: GET_COMMENTS_SUCCESS,
     payload: comments,

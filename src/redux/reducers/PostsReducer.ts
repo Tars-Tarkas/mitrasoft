@@ -1,3 +1,4 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 import {
   GET_POSTS,
   GET_POSTS_ERROR,
@@ -10,6 +11,8 @@ import {
   GET_USER_ERROR,
 } from "../contstants";
 
+import { initialStateType, CommentsType } from "../../types/types";
+
 const initialState = {
   posts: [],
   comments: [],
@@ -18,9 +21,12 @@ const initialState = {
   loadingComments: false,
   loadingUsers: false,
   error: false,
-};
+} as initialStateType;
 
-const PostsReducer = (state = initialState, { type, payload }: any) => {
+const PostsReducer = (
+  state = initialState,
+  { type, payload }: PayloadAction<any>
+) => {
   switch (type) {
     case GET_POSTS:
       state = { ...state, loadingPosts: true };
@@ -40,7 +46,13 @@ const PostsReducer = (state = initialState, { type, payload }: any) => {
       state = { ...state, loadingComments: true };
       break;
     case GET_COMMENTS_SUCCESS:
-      state = { ...state, comments: payload, loadingComments: false };
+      state = {
+        ...state,
+        comments: [...state.comments, payload],
+        loadingComments: false,
+      };
+      console.log(state.comments);
+
       break;
     case GET_COMMENTS_ERROR:
       state = { ...state, error: true, loadingComments: false };
