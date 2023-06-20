@@ -19,6 +19,9 @@ export async function get(url: string, config?: any) {
   return await axiosApi
     .get(url, {
       ...config,
+      headers: {
+        Accept: "application/json",
+      },
     })
     .then((response) => response.data);
 }

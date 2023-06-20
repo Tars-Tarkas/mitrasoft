@@ -28,4 +28,25 @@ export type UsersType = {
   name: string;
   username: string;
   email: string;
+  address: AddressType;
+  phone: string;
+  company: CompanyType;
+};
+
+export type AddressType = {
+  street: string;
+  suite: string;
+  city: string;
+  zipcode: string;
+  geo: GeoType;
+};
+
+export type GeoType = {
+  lat: string;
+  lng: string;
+};
+export type CompanyType = {
+  name: string;
+  catchPhrase: string;
+  bs: string;
 };

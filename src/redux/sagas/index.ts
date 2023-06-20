@@ -21,10 +21,10 @@ const delay = (time: number) =>
     setTimeout(resolve, time * 1000);
   });
 
-function* onGetPosts(): any {
+function* onGetPosts({ payload: page, _limit }: any): any {
   try {
-    yield delay(0);
-    const response = yield call(getPosts);
+    yield delay(1);
+    const response = yield call(getPosts, page, _limit);
     yield put(getPostsSuccess(response));
   } catch (error) {
     yield put(getPostsError(error.response));

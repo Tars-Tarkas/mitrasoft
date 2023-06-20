@@ -11,7 +11,7 @@ import {
   GET_USER_ERROR,
 } from "../contstants";
 
-import { initialStateType, CommentsType } from "../../types/types";
+import { initialStateType } from "../../types/types";
 
 const initialState = {
   posts: [],
@@ -48,11 +48,9 @@ const PostsReducer = (
     case GET_COMMENTS_SUCCESS:
       state = {
         ...state,
-        comments: [...state.comments, payload],
+        comments: [...state.comments, ...payload],
         loadingComments: false,
       };
-      console.log(state.comments);
-
       break;
     case GET_COMMENTS_ERROR:
       state = { ...state, error: true, loadingComments: false };
@@ -63,7 +61,6 @@ const PostsReducer = (
       break;
     case GET_USER_SUCCESS:
       state = { ...state, users: payload, loadingUsers: false };
-      console.log(state);
       break;
     case GET_USER_ERROR:
       state = { ...state, error: true, loadingUsers: false };

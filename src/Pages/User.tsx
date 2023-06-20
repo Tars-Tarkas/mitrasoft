@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getUsers } from "../redux/actions/actionCreator";
 import { useDispatch } from "react-redux";
+import UserDetails from "../components/UserDetails";
+
 
 const User = () => {
   const { users = [], loadingUsers } = useSelector(
@@ -29,7 +31,7 @@ const User = () => {
           </div>
         ) : (
           users?.map((item: any) => {
-            return <li key={item.id}>{item.name}</li>;
+            return <UserDetails {...item} key={item.id} />;
           })
         )}
 
