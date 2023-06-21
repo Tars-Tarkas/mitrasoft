@@ -7,16 +7,21 @@ import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
 import { Container } from "react-bootstrap";
 import PaginationPosts from "../components/PaginationPosts";
-import SearchInput from "../components/SearchInput";
+import SearchFilter from "../components/SearchFilter";
+import { useSearchParams } from "react-router-dom";
 
 type PostListType = {
   title: string;
 };
 
 const PostList = ({ title }: PostListType) => {
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const postQuery = searchParams.get("post") || "";
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getPosts(page, 10));
+    dispatch(getPosts(page, 10, postQuery));
   }, [dispatch]);
 
   useEffect(() => {
@@ -26,11 +31,11 @@ const PostList = ({ title }: PostListType) => {
     (state: any) => state.PostsReducer
   );
 
-  const [page, setPage] = useState(1);
-
   let postsList;
   if (posts.length > 0) {
-    postsList = posts.map((item: any) => <Posts {...item} key={item.id} />);
+    postsList = posts
+      .filter((post: any) => post.title.includes(postQuery))
+      .map((item: any) => <Posts {...item} key={item.id} />);
   } else {
     postsList = (
       <tr>
@@ -41,19 +46,19 @@ const PostList = ({ title }: PostListType) => {
     );
   }
 
-  const totalPage = 10;
+  const totalPage = posts.length;
 
   const handleChangePage = useCallback(
     (page: any) => {
       setPage(page);
-      dispatch(getPosts(page, 10));
+      dispatch(getPosts(page, 10, postQuery));
     },
     [dispatch]
   );
 
   return (
     <Container>
-      <SearchInput />
+      <SearchFilter setSearchParams={setSearchParams} postQuery={postQuery} />
       {posts === null || loadingPosts ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <Spinner animation="border" variant="primary" />
