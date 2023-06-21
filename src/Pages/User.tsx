@@ -9,7 +9,6 @@ import { getUsers } from "../redux/actions/actionCreator";
 import { useDispatch } from "react-redux";
 import UserDetails from "../components/UserDetails";
 
-
 const User = () => {
   const { users = [], loadingUsers } = useSelector(
     (state: any) => state.PostsReducer
@@ -20,7 +19,7 @@ const User = () => {
 
   useEffect(() => {
     dispatch(getUsers(params.id));
-  }, [params.id]);
+  }, [dispatch, params.id]);
 
   return (
     <>

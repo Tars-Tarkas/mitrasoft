@@ -9,6 +9,7 @@ import {
   GET_USER,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
+  GET_SEARCH,
 } from "../contstants";
 
 import { initialStateType } from "../../types/types";
@@ -65,6 +66,14 @@ const PostsReducer = (
     case GET_USER_ERROR:
       state = { ...state, error: true, loadingUsers: false };
       break;
+
+    case GET_SEARCH: {
+      const value = payload;
+      const works = state.posts.filter((val) => val.title.includes(value));
+      console.log(works);
+      return { ...state, posts: works };
+    }
+
     default:
       state = { ...state };
       break;

@@ -9,3 +9,7 @@ export const GET_COMMENTS_ERROR = "GET_COMMENTS_ERROR";
 export const GET_USER = "GET_USER";
 export const GET_USER_SUCCESS = "GET_USER_SUCCES";
 export const GET_USER_ERROR = "GET_USER_ERROR";
+
+export const GET_SEARCH = "GET_SEARCH";
+export const GET_SEARCH_SUCCESS = "GET_SEARCH_SUCCES";
+export const GET_SEARCH_ERROR = "GET_SEARCH_ERROR";

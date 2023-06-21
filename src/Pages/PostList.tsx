@@ -7,6 +7,8 @@ import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
 import { Container } from "react-bootstrap";
 import PaginationPosts from "../components/PaginationPosts";
+import SearchInput from "../components/SearchInput";
+
 type PostListType = {
   title: string;
 };
@@ -40,7 +42,6 @@ const PostList = ({ title }: PostListType) => {
   }
 
   const totalPage = 10;
-  console.log(totalPage);
 
   const handleChangePage = useCallback(
     (page: any) => {
@@ -52,6 +53,7 @@ const PostList = ({ title }: PostListType) => {
 
   return (
     <Container>
+      <SearchInput />
       {posts === null || loadingPosts ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <Spinner animation="border" variant="primary" />
