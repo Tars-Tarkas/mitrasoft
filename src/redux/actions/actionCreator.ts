@@ -8,16 +8,12 @@ import {
   GET_USER,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
-  GET_SEARCH,
 } from "../contstants";
 
 import { PostsType, CommentsType } from "../../types/types";
 
-export const getPosts = (_page: any, _limit: any, _search: any) => ({
+export const getPosts = () => ({
   type: GET_POSTS,
-  payload: _page,
-  _limit,
-  _search,
 });
 
 export const getPostsSuccess = (posts: PostsType) => {
@@ -66,11 +62,5 @@ export const getUsersError = (error: boolean) => {
   return {
     type: GET_USER_ERROR,
     payload: error,
-  };
-};
-export const getSearch = (value: string) => {
-  return {
-    type: GET_SEARCH,
-    payload: value,
   };
 };

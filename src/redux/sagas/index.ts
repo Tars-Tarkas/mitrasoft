@@ -1,6 +1,6 @@
 import { put, call, takeLatest, all } from "redux-saga/effects";
 
-import { GET_POSTS, GET_COMMENTS, GET_USER, GET_SEARCH } from "../contstants";
+import { GET_POSTS, GET_COMMENTS, GET_USER } from "../contstants";
 import {
   getPostsError,
   getPostsSuccess,
@@ -14,7 +14,6 @@ import {
   getPosts,
   getPostComments,
   getUser,
-  getSearchPosts,
 } from "../../helpers/backend_helper";
 
 const delay = (time: number) =>
@@ -22,10 +21,10 @@ const delay = (time: number) =>
     setTimeout(resolve, time * 1000);
   });
 
-function* onGetPosts({ payload: _page, _limit, _search }: any): any {
+function* onGetPosts(): any {
   try {
     yield delay(1);
-    const response = yield call(getPosts, _page, _limit, _search);
+    const response = yield call(getPosts);
     yield put(getPostsSuccess(response));
   } catch (error) {
     yield put(getPostsError(error.response));
@@ -52,15 +51,10 @@ function* onGetUsers({ payload: id }: any): any {
   }
 }
 
-function* onGetSearch({ payload: value }: any): any {
-  yield call(getSearchPosts, value);
-}
-
 function* watchSaga() {
   yield takeLatest(GET_POSTS, onGetPosts);
   yield takeLatest(GET_COMMENTS, onGetComments);
   yield takeLatest(GET_USER, onGetUsers);
-  yield takeLatest(GET_SEARCH, onGetSearch);
 }
 
 export default function* rootSaga() {

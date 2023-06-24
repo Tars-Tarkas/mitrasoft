@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { getPosts } from "../redux/actions/actionCreator";
 import Posts from "../components/Posts";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,24 +9,32 @@ import { Container } from "react-bootstrap";
 import PaginationPosts from "../components/PaginationPosts";
 import SearchFilter from "../components/SearchFilter";
 import { useSearchParams } from "react-router-dom";
+import { PostsType } from "../types/types";
 
 type PostListType = {
   title: string;
 };
 
 const PostList = ({ title }: PostListType) => {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage] = useState(10);
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const postQuery = searchParams.get("post") || "";
+  const postQuery = searchParams.get("search") || "";
+
   const dispatch = useDispatch();
 
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+
   useEffect(() => {
-    dispatch(getPosts(page, 10, postQuery));
+    dispatch(getPosts());
   }, [dispatch]);
 
   useEffect(() => {
     document.title = title;
   });
+
   const { posts = [], loadingPosts } = useSelector(
     (state: any) => state.PostsReducer
   );
@@ -34,27 +42,22 @@ const PostList = ({ title }: PostListType) => {
   let postsList;
   if (posts.length > 0) {
     postsList = posts
-      .filter((post: any) => post.title.includes(postQuery))
-      .map((item: any) => <Posts {...item} key={item.id} />);
+      .filter((post: PostsType) => post.title.includes(postQuery))
+      .slice(firstPostIndex, lastPostIndex)
+      .map((item: PostsType) => <Posts {...item} key={item.id} />);
   } else {
     postsList = (
       <tr>
         <td>
-          <h2>No posts</h2>
+          <h2>Нет постов</h2>
         </td>
       </tr>
     );
   }
 
-  const totalPage = posts.length;
-
-  const handleChangePage = useCallback(
-    (page: any) => {
-      setPage(page);
-      dispatch(getPosts(page, 10, postQuery));
-    },
-    [dispatch]
-  );
+  const postsLength = posts.filter((post: PostsType) =>
+    post.title.includes(postQuery)
+  ).length;
 
   return (
     <Container>
@@ -76,13 +79,12 @@ const PostList = ({ title }: PostListType) => {
           <tbody>{postsList}</tbody>
         </Table>
       )}
-      {totalPage > 1 && (
-        <PaginationPosts
-          total={totalPage}
-          current={page}
-          onChangePage={handleChangePage}
-        />
-      )}
+      <PaginationPosts
+        currentPage={currentPage}
+        totalPage={postsLength}
+        postPerPage={postPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </Container>
   );
 };

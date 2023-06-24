@@ -2,38 +2,48 @@ import React from "react";
 import { Pagination } from "react-bootstrap";
 
 type PaginationPostsType = {
-  total: number;
-  current: number;
-  onChangePage: (current: any) => void;
+  totalPage: number;
+  postPerPage: number;
+  currentPage: number;
+  setCurrentPage: (current: number) => void;
 };
 
 const PaginationPosts = ({
-  total,
-  current,
-  onChangePage,
+  totalPage,
+  postPerPage,
+  currentPage,
+  setCurrentPage,
 }: PaginationPostsType) => {
   let items = [];
+  let pageLength = Math.ceil(totalPage / postPerPage);
 
-  if (current > 1) {
+  if (currentPage > 1) {
     items.push(
-      <Pagination.Prev key="prev" onClick={() => onChangePage(current - 1)} />
+      <Pagination.Prev
+        key="prev"
+        onClick={() => setCurrentPage(currentPage - 1)}
+      />
     );
   }
-  for (let page = 1; page <= total; page++) {
+
+  for (let page = 1; page <= pageLength; page++) {
     items.push(
       <Pagination.Item
         key={page}
         data-page={page}
-        active={page === current}
-        onClick={() => onChangePage(page)}
+        active={page === currentPage}
+        onClick={() => setCurrentPage(page)}
       >
         {page}
       </Pagination.Item>
     );
   }
-  if (current < total) {
+  if (currentPage < pageLength) {
     items.push(
-      <Pagination.Next key="next" onClick={() => onChangePage(current + 1)} />
+      <Pagination.Next
+        key="next"
+        onClick={() => setCurrentPage(currentPage + 1)}
+      />
     );
   }
   return (

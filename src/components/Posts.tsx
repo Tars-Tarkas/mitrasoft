@@ -9,7 +9,7 @@ import CommentsList from "./CommetsList";
 import Image from "react-bootstrap/Image";
 import Table from "react-bootstrap/Table";
 
-import { PostsType } from "../types/types";
+import { PostsType, CommentsType } from "../types/types";
 
 const Posts = (posts: PostsType) => {
   const { title, body, userId, id } = posts;
@@ -22,7 +22,7 @@ const Posts = (posts: PostsType) => {
 
   const [show, setShow] = useState(false);
 
-  const setComments = (id: any) => {
+  const setComments = (id: number) => {
     dispatch(getComments(id));
     setShow(!show);
   };
@@ -41,15 +41,15 @@ const Posts = (posts: PostsType) => {
   } else {
     if (comments.length > 0) {
       commentsList = comments
-        .filter((item: any) => item.postId === id)
-        .map((item: any, index: number) => {
+        .filter((item: CommentsType) => item.postId === id)
+        .map((item: CommentsType, index: number) => {
           return <CommentsList {...item} key={index} />;
         });
     } else {
       commentsList = (
         <tr>
           <td colSpan={2}>
-            <h2>No comments</h2>
+            <h2>Нет комментарий</h2>
           </td>
         </tr>
       );
