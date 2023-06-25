@@ -24,6 +24,9 @@ const User = () => {
   return (
     <>
       <Container>
+        <Button variant="outline-secondary mb-3" onClick={() => navigate("/")}>
+          Назад
+        </Button>
         {loadingUsers ? (
           <div className="d-flex justify-content-center">
             <Spinner animation="border" variant="primary" />
@@ -33,10 +36,6 @@ const User = () => {
             return <UserDetails {...item} key={item.id} />;
           })
         )}
-
-        <Button variant="outline-secondary" onClick={() => navigate("/")}>
-          Назад
-        </Button>
       </Container>
     </>
   );

@@ -1,6 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { getPosts } from "../redux/actions/actionCreator";
+import {
+  getPosts,
+  sortPostsAsc,
+  sortPostsDesc,
+} from "../redux/actions/actionCreator";
 import Posts from "../components/Posts";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
@@ -8,8 +12,8 @@ import Table from "react-bootstrap/Table";
 import { Container } from "react-bootstrap";
 import PaginationPosts from "../components/PaginationPosts";
 import SearchFilter from "../components/SearchFilter";
-import { useSearchParams } from "react-router-dom";
 import { PostsType } from "../types/types";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 type PostListType = {
   title: string;
@@ -18,9 +22,7 @@ type PostListType = {
 const PostList = ({ title }: PostListType) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const postQuery = searchParams.get("search") || "";
+  const [sortPosts, setSortPosts] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,26 +44,34 @@ const PostList = ({ title }: PostListType) => {
   let postsList;
   if (posts.length > 0) {
     postsList = posts
-      .filter((post: PostsType) => post.title.includes(postQuery))
       .slice(firstPostIndex, lastPostIndex)
       .map((item: PostsType) => <Posts {...item} key={item.id} />);
   } else {
     postsList = (
       <tr>
-        <td>
+        <td colSpan={4} className="text-center">
           <h2>Нет постов</h2>
         </td>
       </tr>
     );
   }
 
-  const postsLength = posts.filter((post: PostsType) =>
-    post.title.includes(postQuery)
-  ).length;
+  const sortColumn = () => {
+    sortPosts
+      ? dispatch(sortPostsAsc("title"))
+      : dispatch(sortPostsDesc("title"));
+    setSortPosts(!sortPosts);
+  };
+
+  let sortIcon = !sortPosts ? (
+    <i className="bi bi-caret-down-fill"></i>
+  ) : (
+    <i className="bi bi-caret-up-fill"></i>
+  );
 
   return (
     <Container>
-      <SearchFilter setSearchParams={setSearchParams} postQuery={postQuery} />
+      <SearchFilter />
       {posts === null || loadingPosts ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
           <Spinner animation="border" variant="primary" />
@@ -71,9 +81,15 @@ const PostList = ({ title }: PostListType) => {
           <thead>
             <tr>
               <th className="table-primary"></th>
-              <th className="table-primary">Заголовок</th>
-              <th className="table-primary">Текст поста</th>
-              <th className="table-primary">Комментарии</th>
+              <th
+                role="button"
+                className="table-primary d-flex justify-content-between "
+                onClick={sortColumn}
+              >
+                Заголовок{sortIcon}
+              </th>
+              <th className="table-primary col-7">Текст поста</th>
+              <th className="table-primary col-2">Комментарии</th>
             </tr>
           </thead>
           <tbody>{postsList}</tbody>
@@ -81,7 +97,7 @@ const PostList = ({ title }: PostListType) => {
       )}
       <PaginationPosts
         currentPage={currentPage}
-        totalPage={postsLength}
+        totalPage={posts.length}
         postPerPage={postPerPage}
         setCurrentPage={setCurrentPage}
       />

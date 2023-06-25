@@ -4,17 +4,27 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { UsersType } from "../types/types";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUsersComments } from "../redux/actions/actionCreator";
 
 const UserDetails = (item: UsersType) => {
   const { address, company, email, name, phone, username } = item;
+  const dispatch = useDispatch();
+  const { userComments = [] } = useSelector((state: any) => state.PostsReducer);
+  useEffect(() => {
+    dispatch(getUsersComments(email));
+  }, [dispatch, email]);
+
   return (
     <Card>
       <Row className="justify-content-md-center">
         <Col md="auto">
-          <Card.Img
-            src={process.env.PUBLIC_URL + "/avatar.svg"}
-            style={{ width: "6rem" }}
-          ></Card.Img>
+          <i
+            className="bi bi-person-circle"
+            style={{ fontSize: "5rem", color: "cornflowerblue" }}
+          />
         </Col>
         <Col>
           <Card.Title>
@@ -52,6 +62,7 @@ const UserDetails = (item: UsersType) => {
           </ListGroup>
         </Col>
       </Row>
+      <Card.Footer>{userComments.id}</Card.Footer>
     </Card>
   );
 };

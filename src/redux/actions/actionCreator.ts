@@ -8,9 +8,15 @@ import {
   GET_USER,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
+  SORT_POSTS_ASC,
+  SORT_POSTS_DESC,
+  FILTER_BY_VALUE,
+  GET_USER_COMMENTS,
+  GET_USER_COMMENTS_SUCCESS,
+  GET_USER_COMMENTS_ERROR,
 } from "../contstants";
 
-import { PostsType, CommentsType } from "../../types/types";
+import { PostsType, CommentsType, UsersType } from "../../types/types";
 
 export const getPosts = () => ({
   type: GET_POSTS,
@@ -52,7 +58,7 @@ export const getUsers = (id: any) => ({
   payload: id,
 });
 
-export const getUsersSuccess = (users: any) => {
+export const getUsersSuccess = (users: UsersType) => {
   return {
     type: GET_USER_SUCCESS,
     payload: users,
@@ -62,5 +68,43 @@ export const getUsersError = (error: boolean) => {
   return {
     type: GET_USER_ERROR,
     payload: error,
+  };
+};
+export const getUsersComments = (email: any) => ({
+  type: GET_USER_COMMENTS,
+  payload: email,
+});
+
+export const getUsersCommentsSuccess = (userComments: CommentsType) => {
+  return {
+    type: GET_USER_COMMENTS_SUCCESS,
+    payload: userComments,
+  };
+};
+export const getUsersCommentsError = (error: boolean) => {
+  return {
+    type: GET_USER_COMMENTS_ERROR,
+    payload: error,
+  };
+};
+
+export const sortPostsAsc = (column: string) => {
+  return {
+    type: SORT_POSTS_ASC,
+    payload: column,
+  };
+};
+
+export const sortPostsDesc = (column: string) => {
+  return {
+    type: SORT_POSTS_DESC,
+    payload: column,
+  };
+};
+
+export const filterByValue = (value: string) => {
+  return {
+    type: FILTER_BY_VALUE,
+    payload: value,
   };
 };

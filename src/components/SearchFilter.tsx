@@ -1,22 +1,25 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { filterByValue, getPosts } from "../redux/actions/actionCreator";
+import { useSearchParams } from "react-router-dom";
 
-import { PostsType } from "../types/types";
-
-type SearchFilterType = {
-  setSearchParams: (search: any) => void;
-  postQuery: string;
-};
-
-const SearchFilter = ({ setSearchParams, postQuery }: SearchFilterType) => {
+const SearchFilter = () => {
+  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const postQuery = searchParams.get("search") || "";
   const [search, setSearch] = useState(postQuery);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target;
     const query = form.search.value;
-    setSearchParams({ search: query });
+    if (query) {
+      dispatch(filterByValue(query));
+      setSearchParams({ search: query });
+      setSearch("");
+    } else dispatch(getPosts());
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +39,12 @@ const SearchFilter = ({ setSearchParams, postQuery }: SearchFilterType) => {
         value={search}
         onChange={handleChangeInput}
       />
-      <Form.Control className="w-25" type="submit" value="Поиск" />
+      <Form.Control
+        className="w-25"
+        type="submit"
+        value="Поиск"
+        // disabled={search ? false : true}
+      />
     </Form>
   );
 };

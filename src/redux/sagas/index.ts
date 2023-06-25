@@ -1,6 +1,11 @@
 import { put, call, takeLatest, all } from "redux-saga/effects";
 
-import { GET_POSTS, GET_COMMENTS, GET_USER } from "../contstants";
+import {
+  GET_POSTS,
+  GET_COMMENTS,
+  GET_USER,
+  GET_USER_COMMENTS,
+} from "../contstants";
 import {
   getPostsError,
   getPostsSuccess,
@@ -8,12 +13,15 @@ import {
   getCommentsSuccess,
   getUsersSuccess,
   getUsersError,
+  getUsersCommentsSuccess,
+  getUsersCommentsError,
 } from "../actions/actionCreator";
 
 import {
   getPosts,
   getPostComments,
   getUser,
+  getUserComments,
 } from "../../helpers/backend_helper";
 
 const delay = (time: number) =>
@@ -51,10 +59,21 @@ function* onGetUsers({ payload: id }: any): any {
   }
 }
 
+function* onGetUserComments({ payload: email }: any): any {
+  try {
+    // yield delay(2);
+    const response = yield call(getUserComments, email);
+    yield put(getUsersCommentsSuccess(response));
+  } catch (error) {
+    yield put(getUsersCommentsError(error.response));
+  }
+}
+
 function* watchSaga() {
   yield takeLatest(GET_POSTS, onGetPosts);
   yield takeLatest(GET_COMMENTS, onGetComments);
   yield takeLatest(GET_USER, onGetUsers);
+  yield takeLatest(GET_USER_COMMENTS, onGetUserComments);
 }
 
 export default function* rootSaga() {

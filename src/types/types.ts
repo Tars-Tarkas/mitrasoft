@@ -2,9 +2,12 @@ export type initialStateType = {
   posts: PostsType[];
   comments: CommentsType[];
   users: UsersType[];
+  query: PostsType[];
+  userComments: [];
   loadingPosts: boolean;
   loadingComments: boolean;
   loadingUsers: boolean;
+  loadingUserCommets: boolean;
   error: boolean;
 };
 

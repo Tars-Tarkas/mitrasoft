@@ -6,8 +6,8 @@ import { Button, Nav } from "react-bootstrap";
 import { getComments } from "../redux/actions/actionCreator";
 import { LinkContainer } from "react-router-bootstrap";
 import CommentsList from "./CommetsList";
-import Image from "react-bootstrap/Image";
 import Table from "react-bootstrap/Table";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { PostsType, CommentsType } from "../types/types";
 
@@ -48,7 +48,7 @@ const Posts = (posts: PostsType) => {
     } else {
       commentsList = (
         <tr>
-          <td colSpan={2}>
+          <td colSpan={2} className="text-center">
             <h2>Нет комментарий</h2>
           </td>
         </tr>
@@ -62,10 +62,9 @@ const Posts = (posts: PostsType) => {
         <td>
           <LinkContainer to={`/users/${userId}`}>
             <Nav.Link>
-              <Image
-                src={process.env.PUBLIC_URL + "/avatar.svg"}
-                rounded
-                style={{ width: "4rem" }}
+              <i
+                className="bi bi-person-circle"
+                style={{ fontSize: "3rem", color: "cornflowerblue" }}
               />
             </Nav.Link>
           </LinkContainer>

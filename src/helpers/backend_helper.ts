@@ -6,6 +6,9 @@ import * as url from "./url_helper";
 
 export const getPosts = () => get(url.GET_POSTS);
 
+export const getUserComments = (email: string) =>
+  get(url.GET_USER_COMMENTS, { params: { email } });
+
 export const getPostComments = (postId: number) =>
   get(url.GET_POST_COMMENTS, { params: { postId } });
 
