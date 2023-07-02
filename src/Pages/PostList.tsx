@@ -9,11 +9,11 @@ import Posts from "../components/Posts";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import { Container } from "react-bootstrap";
 import PaginationPosts from "../components/PaginationPosts";
 import SearchFilter from "../components/SearchFilter";
 import { PostsType } from "../types/types";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useSearchParams } from "react-router-dom";
 
 type PostListType = {
   title: string;
@@ -24,28 +24,35 @@ const PostList = ({ title }: PostListType) => {
   const [postPerPage] = useState(10);
   const [sortPosts, setSortPosts] = useState(false);
 
+  const [, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
 
-  const lastPostIndex = currentPage * postPerPage;
-  const firstPostIndex = lastPostIndex - postPerPage;
+  const {
+    posts = [],
+    totalCount,
+    loadingPosts,
+    query,
+  } = useSelector((state: any) => state.PostsReducer);
 
   useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
+    setSearchParams({
+      _page: currentPage.toString(),
+      _limit: postPerPage.toString(),
+      _search: query,
+    });
+    dispatch(getPosts(currentPage, postPerPage, query));
+  }, [dispatch, currentPage, postPerPage, query, setSearchParams]);
 
   useEffect(() => {
     document.title = title;
   });
 
-  const { posts = [], loadingPosts } = useSelector(
-    (state: any) => state.PostsReducer
-  );
-
   let postsList;
   if (posts.length > 0) {
-    postsList = posts
-      .slice(firstPostIndex, lastPostIndex)
-      .map((item: PostsType) => <Posts {...item} key={item.id} />);
+    postsList = posts.map((item: PostsType) => (
+      <Posts {...item} key={item.id} />
+    ));
   } else {
     postsList = (
       <tr>
@@ -69,8 +76,10 @@ const PostList = ({ title }: PostListType) => {
     <i className="bi bi-caret-up-fill"></i>
   );
 
+  console.log(posts.length);
+
   return (
-    <Container>
+    <>
       <SearchFilter />
       {posts === null || loadingPosts ? (
         <div className="vh-100 d-flex justify-content-center align-items-center">
@@ -97,11 +106,11 @@ const PostList = ({ title }: PostListType) => {
       )}
       <PaginationPosts
         currentPage={currentPage}
-        totalPage={posts.length}
+        totalPage={totalCount}
         postPerPage={postPerPage}
         setCurrentPage={setCurrentPage}
       />
-    </Container>
+    </>
   );
 };
 

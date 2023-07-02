@@ -20,8 +20,10 @@ export async function get(url: string, config?: any) {
     .get(url, {
       ...config,
       headers: {
-        Accept: "application/json",
+        // Accept: "application/json, text/plain, */*",
+        // "Access-Control-Expose-Headers": "x-total-count",
+        "content-type": "application/json; charset=utf-8",
       },
     })
-    .then((response) => response.data);
+    .then((response) => response);
 }

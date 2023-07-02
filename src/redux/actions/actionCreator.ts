@@ -10,16 +10,21 @@ import {
   GET_USER_ERROR,
   SORT_POSTS_ASC,
   SORT_POSTS_DESC,
-  FILTER_BY_VALUE,
   GET_USER_COMMENTS,
   GET_USER_COMMENTS_SUCCESS,
   GET_USER_COMMENTS_ERROR,
+  GET_SEARCH,
+  GET_SEARCH_SUCCESS,
+  GET_SEARCH_ERROR,
 } from "../contstants";
 
 import { PostsType, CommentsType, UsersType } from "../../types/types";
 
-export const getPosts = () => ({
+export const getPosts = (_page: any, _limit: any, search: any) => ({
   type: GET_POSTS,
+  payload: _page,
+  _limit,
+  search,
 });
 
 export const getPostsSuccess = (posts: PostsType) => {
@@ -102,9 +107,22 @@ export const sortPostsDesc = (column: string) => {
   };
 };
 
-export const filterByValue = (value: string) => {
+export const getSearch = (search: string) => {
   return {
-    type: FILTER_BY_VALUE,
-    payload: value,
+    type: GET_SEARCH,
+    payload: search,
+  };
+};
+
+export const getSearchSuccess = (posts: PostsType) => {
+  return {
+    type: GET_SEARCH_SUCCESS,
+    payload: posts,
+  };
+};
+export const getSearchError = (error: boolean) => {
+  return {
+    type: GET_SEARCH_ERROR,
+    payload: error,
   };
 };

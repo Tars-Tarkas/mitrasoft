@@ -19,6 +19,12 @@ const PaginationPosts = ({
 
   if (currentPage > 1) {
     items.push(
+      <Pagination.First key="first" onClick={() => setCurrentPage(1)} />
+    );
+  }
+
+  if (currentPage > 1) {
+    items.push(
       <Pagination.Prev
         key="prev"
         onClick={() => setCurrentPage(currentPage - 1)}
@@ -46,6 +52,12 @@ const PaginationPosts = ({
       />
     );
   }
+  if (currentPage < pageLength) {
+    items.push(
+      <Pagination.Last key="last" onClick={() => setCurrentPage(pageLength)} />
+    );
+  }
+
   return (
     <Pagination className="d-flex justify-content-center">{items}</Pagination>
   );

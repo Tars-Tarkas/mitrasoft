@@ -12,7 +12,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { PostsType, CommentsType } from "../types/types";
 
 const Posts = (posts: PostsType) => {
-  const { title, body, userId, id } = posts;
+  const { title, body, userId, id = 0 } = posts;
 
   const { comments, loadingComments } = useSelector(
     (state: any) => state.PostsReducer

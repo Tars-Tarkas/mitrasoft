@@ -2,7 +2,8 @@ export type initialStateType = {
   posts: PostsType[];
   comments: CommentsType[];
   users: UsersType[];
-  query: PostsType[];
+  query: string;
+  totalCount: number;
   userComments: [];
   loadingPosts: boolean;
   loadingComments: boolean;
@@ -13,10 +14,12 @@ export type initialStateType = {
 
 export type PostsType = {
   userId: number;
-  id: number;
+  id: number | undefined;
   title: string;
   body: string;
 };
+
+export type KeyPostType = keyof PostsType;
 
 export type CommentsType = {
   postId: number;

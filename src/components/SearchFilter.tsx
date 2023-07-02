@@ -2,28 +2,24 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterByValue, getPosts } from "../redux/actions/actionCreator";
-import { useSearchParams } from "react-router-dom";
+import { getSearch } from "../redux/actions/actionCreator";
 
 const SearchFilter = () => {
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const postQuery = searchParams.get("search") || "";
-  const [search, setSearch] = useState(postQuery);
+
+  const [search, setSearch] = useState("");
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target;
     const query = form.search.value;
-    if (query) {
-      dispatch(filterByValue(query));
-      setSearchParams({ search: query });
-      setSearch("");
-    } else dispatch(getPosts());
+    dispatch(getSearch(query));
+    console.log(query.length);
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+    setTimeout(() => dispatch(getSearch(e.target.value)), 500);
   };
 
   return (

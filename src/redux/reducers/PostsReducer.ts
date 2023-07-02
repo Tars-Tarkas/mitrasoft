@@ -11,19 +11,20 @@ import {
   GET_USER_ERROR,
   SORT_POSTS_ASC,
   SORT_POSTS_DESC,
-  FILTER_BY_VALUE,
   GET_USER_COMMENTS,
   GET_USER_COMMENTS_SUCCESS,
   GET_USER_COMMENTS_ERROR,
+  GET_SEARCH,
 } from "../contstants";
 
-import { initialStateType } from "../../types/types";
+import { initialStateType, PostsType } from "../../types/types";
 
 const initialState = {
   posts: [],
   comments: [],
   users: [],
-  query: [],
+  query: "",
+  totalCount: 0,
   userComments: [],
   loadingPosts: false,
   loadingComments: false,
@@ -41,7 +42,14 @@ const PostsReducer = (
       state = { ...state, loadingPosts: true };
       break;
     case GET_POSTS_SUCCESS:
-      state = { ...state, posts: payload, loadingPosts: false };
+      state = {
+        ...state,
+        posts: payload.data.filter((v: PostsType) => {
+          return v.title.toLowerCase().includes(state.query);
+        }),
+        totalCount: payload.headers["x-total-count"],
+        loadingPosts: false,
+      };
       break;
     case GET_POSTS_ERROR:
       state = {
@@ -52,12 +60,18 @@ const PostsReducer = (
       break;
 
     case GET_COMMENTS:
-      state = { ...state, loadingComments: true };
+      const inComments = state.comments.find((item) =>
+        item.id === payload.id ? true : false
+      );
+      if (!inComments) state = { ...state, loadingComments: true };
+      else state.comments.push(payload);
+      console.log(state.comments);
+
       break;
     case GET_COMMENTS_SUCCESS:
       state = {
         ...state,
-        comments: [...state.comments, ...payload],
+        comments: [...state.comments, ...payload.data],
         loadingComments: false,
       };
       break;
@@ -69,7 +83,7 @@ const PostsReducer = (
       state = { ...state, loadingUsers: true };
       break;
     case GET_USER_SUCCESS:
-      state = { ...state, users: payload, loadingUsers: false };
+      state = { ...state, users: payload.data, loadingUsers: false };
       break;
     case GET_USER_ERROR:
       state = { ...state, error: true, loadingUsers: false };
@@ -80,8 +94,6 @@ const PostsReducer = (
       break;
     case GET_USER_COMMENTS_SUCCESS:
       state = { ...state, userComments: payload, loadingUserCommets: false };
-      console.log(state.userComments);
-
       break;
     case GET_USER_COMMENTS_ERROR:
       state = { ...state, error: true, loadingUserCommets: false };
@@ -101,20 +113,11 @@ const PostsReducer = (
       state = { ...state, posts: sortedDesc };
       break;
 
-    case FILTER_BY_VALUE:
-      let value = payload;
-      if (value) {
-        state.query = state.posts;
-        let filteredValues = state.posts.filter((posts) => {
-          return posts.title.toLowerCase().includes(value);
-        });
-        return {
-          ...state,
-          posts: filteredValues,
-        };
-      } else if (!value) {
-        state.posts = state.query;
-      }
+    case GET_SEARCH:
+      state = {
+        ...state,
+        query: payload,
+      };
       break;
 
     default:

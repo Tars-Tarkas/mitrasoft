@@ -11,8 +11,11 @@ import { getUsersComments } from "../redux/actions/actionCreator";
 
 const UserDetails = (item: UsersType) => {
   const { address, company, email, name, phone, username } = item;
+
   const dispatch = useDispatch();
+
   const { userComments = [] } = useSelector((state: any) => state.PostsReducer);
+
   useEffect(() => {
     dispatch(getUsersComments(email));
   }, [dispatch, email]);
@@ -62,7 +65,7 @@ const UserDetails = (item: UsersType) => {
           </ListGroup>
         </Col>
       </Row>
-      <Card.Footer>{userComments.id}</Card.Footer>
+      <Card.Footer>{userComments.body}</Card.Footer>
     </Card>
   );
 };

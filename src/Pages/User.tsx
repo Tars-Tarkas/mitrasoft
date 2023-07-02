@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import { useParams } from "react-router-dom";
@@ -23,20 +23,21 @@ const User = () => {
 
   return (
     <>
-      <Container>
-        <Button variant="outline-secondary mb-3" onClick={() => navigate("/")}>
-          Назад
-        </Button>
-        {loadingUsers ? (
-          <div className="d-flex justify-content-center">
-            <Spinner animation="border" variant="primary" />
-          </div>
-        ) : (
-          users?.map((item: any) => {
-            return <UserDetails {...item} key={item.id} />;
-          })
-        )}
-      </Container>
+      <Button
+        variant="outline-secondary mb-3"
+        onClick={() => navigate("/posts", { replace: true })}
+      >
+        Назад
+      </Button>
+      {loadingUsers ? (
+        <div className="d-flex justify-content-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        users?.map((item: any) => {
+          return <UserDetails {...item} key={item.id} />;
+        })
+      )}
     </>
   );
 };
