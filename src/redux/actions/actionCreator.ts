@@ -20,11 +20,10 @@ import {
 
 import { PostsType, CommentsType, UsersType } from "../../types/types";
 
-export const getPosts = (_page: any, _limit: any, search: any) => ({
+export const getPosts = (_page: any, _limit: any) => ({
   type: GET_POSTS,
   payload: _page,
   _limit,
-  search,
 });
 
 export const getPostsSuccess = (posts: PostsType) => {

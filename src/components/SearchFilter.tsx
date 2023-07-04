@@ -3,8 +3,11 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getSearch } from "../redux/actions/actionCreator";
+import { useSearchParams } from "react-router-dom";
 
 const SearchFilter = () => {
+  const [, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState("");
@@ -13,13 +16,16 @@ const SearchFilter = () => {
     e.preventDefault();
     const form = e.target;
     const query = form.search.value;
-    dispatch(getSearch(query));
-    console.log(query.length);
+    dispatch(getSearch(query.trim()));
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setTimeout(() => dispatch(getSearch(e.target.value)), 500);
+    let value = e.target.value.trim();
+    setSearch(value);
+    setTimeout(() => dispatch(getSearch(value)), 500);
+    setSearchParams({
+      _search: value,
+    });
   };
 
   return (
@@ -39,7 +45,7 @@ const SearchFilter = () => {
         className="w-25"
         type="submit"
         value="Поиск"
-        // disabled={search ? false : true}
+        disabled={search ? false : true}
       />
     </Form>
   );

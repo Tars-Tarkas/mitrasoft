@@ -13,7 +13,6 @@ import PaginationPosts from "../components/PaginationPosts";
 import SearchFilter from "../components/SearchFilter";
 import { PostsType } from "../types/types";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useSearchParams } from "react-router-dom";
 
 type PostListType = {
   title: string;
@@ -21,28 +20,21 @@ type PostListType = {
 
 const PostList = ({ title }: PostListType) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(10);
   const [sortPosts, setSortPosts] = useState(false);
+  const [postPerPage] = useState(10);
 
-  const [, setSearchParams] = useSearchParams();
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
 
   const dispatch = useDispatch();
 
-  const {
-    posts = [],
-    totalCount,
-    loadingPosts,
-    query,
-  } = useSelector((state: any) => state.PostsReducer);
+  const { posts = [], loadingPosts } = useSelector(
+    (state: any) => state.PostsReducer
+  );
 
   useEffect(() => {
-    setSearchParams({
-      _page: currentPage.toString(),
-      _limit: postPerPage.toString(),
-      _search: query,
-    });
-    dispatch(getPosts(currentPage, postPerPage, query));
-  }, [dispatch, currentPage, postPerPage, query, setSearchParams]);
+    dispatch(getPosts(currentPage, postPerPage));
+  }, [dispatch, currentPage, postPerPage]);
 
   useEffect(() => {
     document.title = title;
@@ -50,9 +42,9 @@ const PostList = ({ title }: PostListType) => {
 
   let postsList;
   if (posts.length > 0) {
-    postsList = posts.map((item: PostsType) => (
-      <Posts {...item} key={item.id} />
-    ));
+    postsList = posts
+      .slice(firstPostIndex, lastPostIndex)
+      .map((item: PostsType) => <Posts {...item} key={item.id} />);
   } else {
     postsList = (
       <tr>
@@ -75,8 +67,6 @@ const PostList = ({ title }: PostListType) => {
   ) : (
     <i className="bi bi-caret-up-fill"></i>
   );
-
-  console.log(posts.length);
 
   return (
     <>
@@ -106,7 +96,7 @@ const PostList = ({ title }: PostListType) => {
       )}
       <PaginationPosts
         currentPage={currentPage}
-        totalPage={totalCount}
+        totalPage={posts.length}
         postPerPage={postPerPage}
         setCurrentPage={setCurrentPage}
       />

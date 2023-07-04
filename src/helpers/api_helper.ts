@@ -25,5 +25,5 @@ export async function get(url: string, config?: any) {
         "content-type": "application/json; charset=utf-8",
       },
     })
-    .then((response) => response);
+    .then((response) => response.data);
 }

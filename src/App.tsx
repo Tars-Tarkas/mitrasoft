@@ -13,8 +13,8 @@ const App: React.FC = () => {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* <Route index element={<PostList title="Посты" />} /> */}
-          <Route path="posts" index element={<PostList title="Посты" />} />
+          <Route index element={<PostList title="Посты" />} />
+          {/* <Route path="posts" index element={<PostList title="Посты" />} /> */}
           <Route path="users/:id" element={<User />} />
           <Route path="about" element={<About title="Обо мне" />} />
         </Route>

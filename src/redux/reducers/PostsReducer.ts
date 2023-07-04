@@ -15,6 +15,8 @@ import {
   GET_USER_COMMENTS_SUCCESS,
   GET_USER_COMMENTS_ERROR,
   GET_SEARCH,
+  GET_SEARCH_SUCCESS,
+  GET_SEARCH_ERROR,
 } from "../contstants";
 
 import { initialStateType, PostsType } from "../../types/types";
@@ -31,6 +33,8 @@ const initialState = {
   loadingUsers: false,
   loadingUserCommets: false,
   error: false,
+  currentPage: 1,
+  postPerPage: 10,
 } as initialStateType;
 
 const PostsReducer = (
@@ -44,10 +48,7 @@ const PostsReducer = (
     case GET_POSTS_SUCCESS:
       state = {
         ...state,
-        posts: payload.data.filter((v: PostsType) => {
-          return v.title.toLowerCase().includes(state.query);
-        }),
-        totalCount: payload.headers["x-total-count"],
+        posts: payload,
         loadingPosts: false,
       };
       break;
@@ -60,18 +61,12 @@ const PostsReducer = (
       break;
 
     case GET_COMMENTS:
-      const inComments = state.comments.find((item) =>
-        item.id === payload.id ? true : false
-      );
-      if (!inComments) state = { ...state, loadingComments: true };
-      else state.comments.push(payload);
-      console.log(state.comments);
-
+      state = { ...state, loadingComments: true };
       break;
     case GET_COMMENTS_SUCCESS:
       state = {
         ...state,
-        comments: [...state.comments, ...payload.data],
+        comments: [...state.comments, ...payload],
         loadingComments: false,
       };
       break;
@@ -83,7 +78,7 @@ const PostsReducer = (
       state = { ...state, loadingUsers: true };
       break;
     case GET_USER_SUCCESS:
-      state = { ...state, users: payload.data, loadingUsers: false };
+      state = { ...state, users: payload, loadingUsers: false };
       break;
     case GET_USER_ERROR:
       state = { ...state, error: true, loadingUsers: false };
@@ -117,6 +112,24 @@ const PostsReducer = (
       state = {
         ...state,
         query: payload,
+        loadingPosts: true,
+      };
+      break;
+    case GET_SEARCH_SUCCESS:
+      let newstate = payload.data.filter((v: PostsType) => {
+        return v.title.toLowerCase().includes(state.query);
+      });
+      state = {
+        ...state,
+        posts: newstate,
+        loadingPosts: false,
+      };
+      break;
+    case GET_SEARCH_ERROR:
+      state = {
+        ...state,
+        error: true,
+        loadingPosts: false,
       };
       break;
 

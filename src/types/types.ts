@@ -3,7 +3,6 @@ export type initialStateType = {
   comments: CommentsType[];
   users: UsersType[];
   query: string;
-  totalCount: number;
   userComments: [];
   loadingPosts: boolean;
   loadingComments: boolean;

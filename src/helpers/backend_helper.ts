@@ -1,8 +1,8 @@
 import { get } from "./api_helper";
 import * as url from "./url_helper";
 
-export const getPosts = (_page: any, _limit: any, search: any) =>
-  get(url.GET_POSTS, { params: { _page, _limit, search } });
+export const getPosts = () =>
+  get(url.GET_POSTS);
 
 export const getUserComments = (email: any) =>
   get(url.GET_USER_COMMENTS, { params: { email } });
@@ -12,4 +12,5 @@ export const getPostComments = (postId: number) =>
 
 export const getUser = (id: number) => get(url.GET_USER, { params: { id } });
 
-export const getSearch = (search: string) => get(url.GET_SEARCH);
+export const getSearch = (search: string) =>
+  get(url.GET_SEARCH, { params: { search } });
