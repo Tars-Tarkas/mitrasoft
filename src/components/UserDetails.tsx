@@ -16,57 +16,65 @@ const UserDetails = (item: UsersType) => {
 
   const { userComments = [] } = useSelector((state: any) => state.PostsReducer);
 
+  console.log(userComments);
+
   useEffect(() => {
-    dispatch(getUsersComments(email));
+    dispatch(getUsersComments(email.toString()));
   }, [dispatch, email]);
 
   return (
-    <Card>
-      <Row className="justify-content-md-center">
-        <Col md="auto">
-          <i
-            className="bi bi-person-circle"
-            style={{ fontSize: "5rem", color: "cornflowerblue" }}
-          />
-        </Col>
-        <Col>
-          <Card.Title>
-            {name} {username}
-          </Card.Title>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <ListGroup>
-            <ListGroup.Item>Phone: {phone}</ListGroup.Item>
-            <ListGroup.Item>Email: {email}</ListGroup.Item>
+    <>
+      <Card>
+        <Row className="justify-content-md-center">
+          <Col md="auto">
+            <i
+              className="bi bi-person-circle"
+              style={{ fontSize: "5rem", color: "cornflowerblue" }}
+            />
+          </Col>
+          <Col>
+            <Card.Title>
+              {name} {username}
+            </Card.Title>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <ListGroup>
-              Company
-              <ListGroup.Item>Company Name: {company.name}</ListGroup.Item>
-              <ListGroup.Item>
-                CatchPhrase: {company.catchPhrase}
-              </ListGroup.Item>
-              <ListGroup.Item>BS: {company.bs}</ListGroup.Item>
+              <ListGroup.Item>Phone: {phone}</ListGroup.Item>
+              <ListGroup.Item>Email: {email}</ListGroup.Item>
+              <ListGroup>
+                Company
+                <ListGroup.Item>Company Name: {company.name}</ListGroup.Item>
+                <ListGroup.Item>
+                  CatchPhrase: {company.catchPhrase}
+                </ListGroup.Item>
+                <ListGroup.Item>BS: {company.bs}</ListGroup.Item>
+              </ListGroup>
             </ListGroup>
-          </ListGroup>
-        </Col>
-        <Col>
-          <ListGroup>
-            Adress
-            <ListGroup.Item>ZipCode: {address.zipcode}</ListGroup.Item>
-            <ListGroup.Item>City: {address.city}</ListGroup.Item>
-            <ListGroup.Item>Street: {address.street}</ListGroup.Item>
-            <ListGroup.Item>Suite: {address.suite}</ListGroup.Item>
+          </Col>
+          <Col>
             <ListGroup>
-              Geo
-              <ListGroup.Item>Lat: {address.geo.lat}</ListGroup.Item>
-              <ListGroup.Item>Lng: {address.geo.lng}</ListGroup.Item>
+              Adress
+              <ListGroup.Item>ZipCode: {address.zipcode}</ListGroup.Item>
+              <ListGroup.Item>City: {address.city}</ListGroup.Item>
+              <ListGroup.Item>Street: {address.street}</ListGroup.Item>
+              <ListGroup.Item>Suite: {address.suite}</ListGroup.Item>
+              <ListGroup>
+                Geo
+                <ListGroup.Item>Lat: {address.geo.lat}</ListGroup.Item>
+                <ListGroup.Item>Lng: {address.geo.lng}</ListGroup.Item>
+              </ListGroup>
             </ListGroup>
-          </ListGroup>
-        </Col>
-      </Row>
-      <Card.Footer>{userComments.body}</Card.Footer>
-    </Card>
+          </Col>
+        </Row>
+      </Card>
+      <span>
+        {userComments.map((item: any) => {
+          return <li>{item.body}</li>;
+        })}
+      </span>
+    </>
   );
 };
 

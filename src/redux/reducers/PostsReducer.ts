@@ -19,22 +19,19 @@ import {
   GET_SEARCH_ERROR,
 } from "../contstants";
 
-import { initialStateType, PostsType } from "../../types/types";
+import { initialStateType, PostsType, CommentsType } from "../../types/types";
 
 const initialState = {
   posts: [],
   comments: [],
   users: [],
   query: "",
-  totalCount: 0,
   userComments: [],
   loadingPosts: false,
   loadingComments: false,
   loadingUsers: false,
   loadingUserCommets: false,
   error: false,
-  currentPage: 1,
-  postPerPage: 10,
 } as initialStateType;
 
 const PostsReducer = (
@@ -64,11 +61,22 @@ const PostsReducer = (
       state = { ...state, loadingComments: true };
       break;
     case GET_COMMENTS_SUCCESS:
-      state = {
-        ...state,
-        comments: [...state.comments, ...payload],
-        loadingComments: false,
-      };
+      let checkarray = state.comments.some(
+        (item: CommentsType) => item.postId === payload.indexOf(item.postId)
+      );
+      if (!checkarray) {
+        state = {
+          ...state,
+          comments: [...state.comments, ...payload],
+          loadingComments: false,
+        };
+      } else {
+        state = {
+          ...state,
+          comments: payload,
+          loadingComments: false,
+        };
+      }
       break;
     case GET_COMMENTS_ERROR:
       state = { ...state, error: true, loadingComments: false };

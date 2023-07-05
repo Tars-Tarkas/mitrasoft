@@ -42,7 +42,7 @@ const SearchFilter = () => {
         onChange={handleChangeInput}
       />
       <Form.Control
-        className="w-25"
+        className="w-25 btn btn-primary"
         type="submit"
         value="Поиск"
         disabled={search ? false : true}

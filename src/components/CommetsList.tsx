@@ -1,16 +1,17 @@
 import React from "react";
-
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import { CommentsType } from "../types/types";
 
 const CommentsList = ({ id }: any) => {
-  const { comments = [], loadingComments } = useSelector(
+  let { comments = [], loadingComments } = useSelector(
     (state: any) => state.PostsReducer
   );
 
+  let checkarray = comments.some((item: CommentsType) => item.postId === id);
+
   let commentsList;
-  if (comments === null || loadingComments) {
+  if (!checkarray && comments && loadingComments) {
     commentsList = (
       <tr>
         <td colSpan={2}>

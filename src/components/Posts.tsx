@@ -5,24 +5,23 @@ import { LinkContainer } from "react-router-bootstrap";
 import CommentsList from "./CommetsList";
 import Table from "react-bootstrap/Table";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getComments } from "../redux/actions/actionCreator";
-import { PostsType } from "../types/types";
+import { PostsType, CommentsType } from "../types/types";
 
 const Posts = (posts: PostsType) => {
   const { title, body, userId, id = 0 } = posts;
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
-  const { comments = [] } = useSelector((state: any) => state.PostsReducer);
-  console.log(comments);
+  let { comments = [] } = useSelector((state: any) => state.PostsReducer);
 
   const setComments = () => {
-    let comarr = comments.some((item: any) => item.postId === id);
-    if (!comarr) {
+    let checkarray = comments.some((item: CommentsType) => item.postId === id);
+    if (!checkarray) {
       dispatch(getComments(id));
     }
-    setShow(!show);
+    setShow((show) => !show);
   };
 
   return (

@@ -25,7 +25,7 @@ const User = () => {
     <>
       <Button
         variant="outline-secondary mb-3"
-        onClick={() => navigate("/posts", { replace: true })}
+        onClick={() => navigate("/", { replace: true })}
       >
         Назад
       </Button>
