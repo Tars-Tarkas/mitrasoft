@@ -3,22 +3,19 @@ export type initialStateType = {
   comments: CommentsType[];
   users: UsersType[];
   query: string;
-  userComments: [];
   loadingPosts: boolean;
   loadingComments: boolean;
   loadingUsers: boolean;
-  loadingUserCommets: boolean;
+  loadingUsersPost: boolean;
   error: boolean;
 };
 
 export type PostsType = {
   userId: number;
-  id: number | undefined;
+  id: number;
   title: string;
   body: string;
 };
-
-export type KeyPostType = keyof PostsType;
 
 export type CommentsType = {
   postId: number;

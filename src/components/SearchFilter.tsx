@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { getSearch } from "../redux/actions/actionCreator";
 import { useSearchParams } from "react-router-dom";
 
-const SearchFilter = () => {
+const SearchFilter: React.FC = (): JSX.Element => {
   const [, setSearchParams] = useSearchParams();
 
   const dispatch = useDispatch();
@@ -20,9 +20,9 @@ const SearchFilter = () => {
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.trim();
+    let value = e.target.value;
     setSearch(value);
-    setTimeout(() => dispatch(getSearch(value)), 500);
+    setTimeout(() => dispatch(getSearch(value.trim())), 500);
     setSearchParams({
       _search: value,
     });

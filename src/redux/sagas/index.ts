@@ -4,7 +4,7 @@ import {
   GET_POSTS,
   GET_COMMENTS,
   GET_USER,
-  GET_USER_COMMENTS,
+  GET_USER_POSTS,
   GET_SEARCH,
 } from "../contstants";
 import {
@@ -14,8 +14,8 @@ import {
   getCommentsSuccess,
   getUsersSuccess,
   getUsersError,
-  getUsersCommentsSuccess,
-  getUsersCommentsError,
+  getUsersPostsSuccess,
+  getUsersPostsError,
   getSearchSuccess,
   getSearchError,
 } from "../actions/actionCreator";
@@ -24,7 +24,7 @@ import {
   getPosts,
   getPostComments,
   getUser,
-  getUserComments,
+  getUserPosts,
   getSearch,
 } from "../../helpers/backend_helper";
 
@@ -45,7 +45,7 @@ function* onGetPosts(): any {
 
 function* onGetComments({ payload: postId }: any): any {
   try {
-    yield delay(2);
+    yield delay(1);
     const response = yield call(getPostComments, postId);
     yield put(getCommentsSuccess(response));
   } catch (error) {
@@ -55,7 +55,7 @@ function* onGetComments({ payload: postId }: any): any {
 
 function* onGetUsers({ payload: id }: any): any {
   try {
-    yield delay(2);
+    yield delay(1);
     const response = yield call(getUser, id);
     yield put(getUsersSuccess(response));
   } catch (error) {
@@ -63,13 +63,13 @@ function* onGetUsers({ payload: id }: any): any {
   }
 }
 
-function* onGetUserComments({ payload: email }: any): any {
+function* onGetUserPosts({ payload: userId }: any): any {
   try {
     yield delay(1);
-    const response = yield call(getUserComments, email);
-    yield put(getUsersCommentsSuccess(response));
+    const response = yield call(getUserPosts, userId);
+    yield put(getUsersPostsSuccess(response));
   } catch (error) {
-    yield put(getUsersCommentsError(error.response));
+    yield put(getUsersPostsError(error.response));
   }
 }
 
@@ -87,12 +87,10 @@ function* watchSaga() {
   yield takeLatest(GET_POSTS, onGetPosts);
   yield takeLatest(GET_COMMENTS, onGetComments);
   yield takeLatest(GET_USER, onGetUsers);
-  yield takeLatest(GET_USER_COMMENTS, onGetUserComments);
+  yield takeLatest(GET_USER_POSTS, onGetUserPosts);
   yield takeLatest(GET_SEARCH, onGetSearch);
 }
 
 export default function* rootSaga() {
   yield all([fork(watchSaga)]);
-  // yield all([call(watchSaga)]);
-  // yield watchSaga();
 }

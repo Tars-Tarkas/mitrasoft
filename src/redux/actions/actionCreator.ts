@@ -10,9 +10,9 @@ import {
   GET_USER_ERROR,
   SORT_POSTS_ASC,
   SORT_POSTS_DESC,
-  GET_USER_COMMENTS,
-  GET_USER_COMMENTS_SUCCESS,
-  GET_USER_COMMENTS_ERROR,
+  GET_USER_POSTS,
+  GET_USER_POSTS_SUCCESS,
+  GET_USER_POSTS_ERROR,
   GET_SEARCH,
   GET_SEARCH_SUCCESS,
   GET_SEARCH_ERROR,
@@ -20,10 +20,8 @@ import {
 
 import { PostsType, CommentsType, UsersType } from "../../types/types";
 
-export const getPosts = (_page: any, _limit: any) => ({
+export const getPosts = () => ({
   type: GET_POSTS,
-  payload: _page,
-  _limit,
 });
 
 export const getPostsSuccess = (posts: PostsType) => {
@@ -57,7 +55,7 @@ export const getCommentsError = (error: boolean) => {
   };
 };
 
-export const getUsers = (id: any) => ({
+export const getUsers = (id: undefined | string) => ({
   type: GET_USER,
   payload: id,
 });
@@ -74,20 +72,20 @@ export const getUsersError = (error: boolean) => {
     payload: error,
   };
 };
-export const getUsersComments = (email: any) => ({
-  type: GET_USER_COMMENTS,
-  payload: email,
+export const getUsersPosts = (userId: undefined | string) => ({
+  type: GET_USER_POSTS,
+  payload: userId,
 });
 
-export const getUsersCommentsSuccess = (userComments: CommentsType) => {
+export const getUsersPostsSuccess = (userComments: CommentsType) => {
   return {
-    type: GET_USER_COMMENTS_SUCCESS,
+    type: GET_USER_POSTS_SUCCESS,
     payload: userComments,
   };
 };
-export const getUsersCommentsError = (error: boolean) => {
+export const getUsersPostsError = (error: boolean) => {
   return {
-    type: GET_USER_COMMENTS_ERROR,
+    type: GET_USER_POSTS_ERROR,
     payload: error,
   };
 };

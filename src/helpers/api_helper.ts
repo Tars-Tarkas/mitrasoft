@@ -19,9 +19,7 @@ export async function get(url: string, config?: any) {
   return await axiosApi
     .get(url, {
       ...config,
-      headers: {
-        // Accept: "application/json, text/plain, */*",
-        // "Access-Control-Expose-Headers": "x-total-count",
+      headers: {    
         "content-type": "application/json; charset=utf-8",
       },
     })

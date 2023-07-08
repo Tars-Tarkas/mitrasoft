@@ -1,11 +1,10 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 type AboutType = {
   title: string;
 };
 
-const About = ({ title }: AboutType) => {
+const About: React.FC<AboutType> = ({ title }): JSX.Element => {
   useEffect(() => {
     document.title = title;
   });

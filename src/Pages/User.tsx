@@ -1,24 +1,22 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import Spinner from "react-bootstrap/Spinner";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { getUsers } from "../redux/actions/actionCreator";
+import { getUsers, getUsersPosts } from "../redux/actions/actionCreator";
 import { useDispatch } from "react-redux";
-import UserDetails from "../components/UserDetails";
+import CardUser from "../components/CardUser";
+import PostsList from "../components/PostsList";
 
-const User = () => {
-  const { users = [], loadingUsers } = useSelector(
-    (state: any) => state.PostsReducer
-  );
+const User: React.FC = (): JSX.Element => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   let params = useParams();
 
   useEffect(() => {
     dispatch(getUsers(params.id));
+  }, [dispatch, params.id]);
+
+  useEffect(() => {
+    dispatch(getUsersPosts(params.id));
   }, [dispatch, params.id]);
 
   return (
@@ -29,15 +27,10 @@ const User = () => {
       >
         Назад
       </Button>
-      {loadingUsers ? (
-        <div className="d-flex justify-content-center">
-          <Spinner animation="border" variant="primary" />
-        </div>
-      ) : (
-        users?.map((item: any) => {
-          return <UserDetails {...item} key={item.id} />;
-        })
-      )}
+      <h2 className="display-6 mb-3">Карточка пользователя</h2>
+      <CardUser />
+      <h2 className="display-6 mb-3">Все посты пользователя</h2>
+      <PostsList />
     </>
   );
 };

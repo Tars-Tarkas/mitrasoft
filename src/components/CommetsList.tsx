@@ -2,10 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import { CommentsType } from "../types/types";
+import { RootState } from "../redux/reducers/index";
 
-const CommentsList = ({ id }: any) => {
+type CommentsListProps = {
+  id: number;
+};
+
+const CommentsList: React.FC<CommentsListProps> = ({ id }): JSX.Element => {
   let { comments = [], loadingComments } = useSelector(
-    (state: any) => state.PostsReducer
+    (state: RootState) => state.PostsReducer
   );
 
   let checkarray = comments.some((item: CommentsType) => item.postId === id);
@@ -25,14 +30,15 @@ const CommentsList = ({ id }: any) => {
     if (comments.length > 0) {
       commentsList = comments
         .filter((item: CommentsType) => item.postId === id)
-        .map((item: CommentsType, index: number) => {
+        .map((item: CommentsType) => {
+          const { id, email, body } = item;
           return (
-            <tr key={index}>
+            <tr key={id}>
               <td colSpan={1} className="fw-bold">
-                {item.email}
+                {email}
               </td>
               <td colSpan={3} className="fst-italic">
-                {item.body}
+                {body}
               </td>
             </tr>
           );
@@ -41,29 +47,13 @@ const CommentsList = ({ id }: any) => {
       commentsList = (
         <tr>
           <td colSpan={2} className="text-center">
-            <h2>Комментарии не найдены</h2>
+            <h4>Комментарии не найдены</h4>
           </td>
         </tr>
       );
     }
   }
 
-  return (
-    <>{commentsList}</>
-    // <tr>
-    //   <td colSpan={1} className="fw-bold">
-    //     {item.email}
-    //   </td>
-    //   <td colSpan={3} className="fst-italic">
-    //     {item.body}
-    //   </td>
-    // </tr>
-  );
-
-  // {
-  //   if(show = true) {
-
-  //   },
-  // };
+  return <>{commentsList}</>;
 };
 export default CommentsList;

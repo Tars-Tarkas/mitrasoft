@@ -8,13 +8,14 @@ type PaginationPostsType = {
   setCurrentPage: (current: number) => void;
 };
 
-const PaginationPosts = ({
+const PaginationPosts: React.FC<PaginationPostsType> = ({
   totalPage,
   postPerPage,
   currentPage,
   setCurrentPage,
-}: PaginationPostsType) => {
+}): JSX.Element => {
   let items = [];
+
   let pageLength = Math.ceil(totalPage / postPerPage);
 
   if (currentPage > 1) {

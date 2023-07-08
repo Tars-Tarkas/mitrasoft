@@ -3,13 +3,13 @@ import { NavLink } from "react-router-dom";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-const Navigation = () => {
+const Navigation: React.FC = (): JSX.Element => {
   return (
     <Navbar
       collapseOnSelect
       bg="dark"
       variant="dark"
-      expand="false"
+      expand="lg"
       sticky="top"
       className="mb-3"
     >

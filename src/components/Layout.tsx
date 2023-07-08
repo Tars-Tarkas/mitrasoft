@@ -2,7 +2,8 @@ import React from "react";
 import Navigation from "./Navigation";
 import { Outlet } from "react-router-dom";
 import { Container } from "react-bootstrap";
-const Layout = () => {
+
+const Layout: React.FC = (): JSX.Element => {
   return (
     <>
       <Navigation />

@@ -11,12 +11,12 @@ import {
   GET_USER_ERROR,
   SORT_POSTS_ASC,
   SORT_POSTS_DESC,
-  GET_USER_COMMENTS,
-  GET_USER_COMMENTS_SUCCESS,
-  GET_USER_COMMENTS_ERROR,
+  GET_USER_POSTS_SUCCESS,
+  GET_USER_POSTS_ERROR,
   GET_SEARCH,
   GET_SEARCH_SUCCESS,
   GET_SEARCH_ERROR,
+  GET_USER_POSTS,
 } from "../contstants";
 
 import { initialStateType, PostsType, CommentsType } from "../../types/types";
@@ -26,11 +26,10 @@ const initialState = {
   comments: [],
   users: [],
   query: "",
-  userComments: [],
   loadingPosts: false,
   loadingComments: false,
   loadingUsers: false,
-  loadingUserCommets: false,
+  loadingUsersPost: false,
   error: false,
 } as initialStateType;
 
@@ -87,30 +86,31 @@ const PostsReducer = (
       break;
     case GET_USER_SUCCESS:
       state = { ...state, users: payload, loadingUsers: false };
+
       break;
     case GET_USER_ERROR:
       state = { ...state, error: true, loadingUsers: false };
       break;
 
-    case GET_USER_COMMENTS:
-      state = { ...state, loadingUserCommets: true };
+    case GET_USER_POSTS:
+      state = { ...state, loadingUsersPost: true };
       break;
-    case GET_USER_COMMENTS_SUCCESS:
-      state = { ...state, userComments: payload, loadingUserCommets: false };
+    case GET_USER_POSTS_SUCCESS:
+      state = { ...state, posts: payload, loadingUsersPost: false };
       break;
-    case GET_USER_COMMENTS_ERROR:
-      state = { ...state, error: true, loadingUserCommets: false };
+    case GET_USER_POSTS_ERROR:
+      state = { ...state, error: true, loadingUsersPost: false };
       break;
 
     case SORT_POSTS_ASC:
-      const sortByKeyAsc = (key: any) => (a: any, b: any) =>
+      const sortByKeyAsc = (key: number) => (a: any, b: any) =>
         a[key] > b[key] ? 1 : -1;
       const sortedAsc = state.posts.slice().sort(sortByKeyAsc(payload));
       state = { ...state, posts: sortedAsc };
       break;
 
     case SORT_POSTS_DESC:
-      const sortByKeyDesc = (key: any) => (a: any, b: any) =>
+      const sortByKeyDesc = (key: number) => (a: any, b: any) =>
         a[key] < b[key] ? 1 : -1;
       const sortedDesc = state.posts.slice().sort(sortByKeyDesc(payload));
       state = { ...state, posts: sortedDesc };
@@ -124,9 +124,10 @@ const PostsReducer = (
       };
       break;
     case GET_SEARCH_SUCCESS:
-      let newstate = payload.data.filter((v: PostsType) => {
+      let newstate = payload.filter((v: PostsType) => {
         return v.title.toLowerCase().includes(state.query);
       });
+
       state = {
         ...state,
         posts: newstate,
