@@ -15,52 +15,55 @@ const PaginationPosts: React.FC<PaginationPostsType> = ({
   setCurrentPage,
 }): JSX.Element => {
   let items = [];
-
   let pageLength = Math.ceil(totalPage / postPerPage);
 
   if (currentPage > 1) {
     items.push(
       <Pagination.First key="first" onClick={() => setCurrentPage(1)} />
     );
-  }
-
-  if (currentPage > 1) {
     items.push(
       <Pagination.Prev
         key="prev"
         onClick={() => setCurrentPage(currentPage - 1)}
       />
     );
+    items.push(<Pagination.Ellipsis key="prev_ellipsis" disabled />);
   }
 
-  for (let page = 1; page <= pageLength; page++) {
+  for (
+    let number = currentPage;
+    number <= currentPage + 3 && number <= pageLength;
+    number++
+  ) {
     items.push(
       <Pagination.Item
-        key={page}
-        data-page={page}
-        active={page === currentPage}
-        onClick={() => setCurrentPage(page)}
+        onClick={() => setCurrentPage(number)}
+        key={number}
+        data-page={number}
+        active={number === currentPage}
       >
-        {page}
+        {number}
       </Pagination.Item>
     );
   }
+
   if (currentPage < pageLength) {
+    items.push(<Pagination.Ellipsis key="next_ellipsis" disabled />);
     items.push(
       <Pagination.Next
         key="next"
         onClick={() => setCurrentPage(currentPage + 1)}
       />
     );
-  }
-  if (currentPage < pageLength) {
     items.push(
       <Pagination.Last key="last" onClick={() => setCurrentPage(pageLength)} />
     );
   }
 
   return (
-    <Pagination className="d-flex justify-content-center">{items}</Pagination>
+    <Pagination className="d-flex justify-content-center" size="sm">
+      {items}
+    </Pagination>
   );
 };
 

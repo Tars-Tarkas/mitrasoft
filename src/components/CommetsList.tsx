@@ -34,7 +34,7 @@ const CommentsList: React.FC<CommentsListProps> = ({ id }): JSX.Element => {
           const { id, email, body } = item;
           return (
             <tr key={id}>
-              <td colSpan={1} className="fw-bold">
+              <td colSpan={1} className="fw-bold fs-6">
                 {email}
               </td>
               <td colSpan={3} className="fst-italic">
