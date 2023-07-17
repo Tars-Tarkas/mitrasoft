@@ -66,7 +66,7 @@ const PostsList: React.FC = (): JSX.Element => {
           <Spinner animation="border" variant="primary" />
         </div>
       ) : (
-        <Table striped bordered hover responsive="sm">
+        <Table striped bordered hover responsive="sm" className="pb-3">
           <thead>
             <tr>
               <th className="table-primary"></th>
@@ -84,7 +84,7 @@ const PostsList: React.FC = (): JSX.Element => {
           <tbody>{postsList}</tbody>
         </Table>
       )}
-      {posts.length >= postPerPage && (
+      {posts.length > postPerPage && (
         <PaginationPosts
           currentPage={currentPage}
           totalPage={posts.length}

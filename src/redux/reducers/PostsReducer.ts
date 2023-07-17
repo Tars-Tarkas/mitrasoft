@@ -30,7 +30,7 @@ const initialState = {
   loadingComments: false,
   loadingUsers: false,
   loadingUsersPost: false,
-  error: false,
+  error: "",
 } as initialStateType;
 
 const PostsReducer = (
@@ -51,7 +51,7 @@ const PostsReducer = (
     case GET_POSTS_ERROR:
       state = {
         ...state,
-        error: true,
+        error: payload,
         loadingPosts: false,
       };
       break;
@@ -78,7 +78,7 @@ const PostsReducer = (
       }
       break;
     case GET_COMMENTS_ERROR:
-      state = { ...state, error: true, loadingComments: false };
+      state = { ...state, error: payload, loadingComments: false };
       break;
 
     case GET_USER:
@@ -89,7 +89,7 @@ const PostsReducer = (
 
       break;
     case GET_USER_ERROR:
-      state = { ...state, error: true, loadingUsers: false };
+      state = { ...state, error: payload, loadingUsers: false };
       break;
 
     case GET_USER_POSTS:
@@ -99,7 +99,7 @@ const PostsReducer = (
       state = { ...state, posts: payload, loadingUsersPost: false };
       break;
     case GET_USER_POSTS_ERROR:
-      state = { ...state, error: true, loadingUsersPost: false };
+      state = { ...state, error: payload, loadingUsersPost: false };
       break;
 
     case SORT_POSTS_ASC:
@@ -127,7 +127,6 @@ const PostsReducer = (
       let newstate = payload.filter((v: PostsType) => {
         return v.title.toLowerCase().includes(state.query);
       });
-
       state = {
         ...state,
         posts: newstate,
@@ -137,7 +136,7 @@ const PostsReducer = (
     case GET_SEARCH_ERROR:
       state = {
         ...state,
-        error: true,
+        error: payload,
         loadingPosts: false,
       };
       break;

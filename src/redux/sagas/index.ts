@@ -1,4 +1,4 @@
-import { put, call, takeLatest, all, fork } from "redux-saga/effects";
+import { put, call, takeLatest, fork, delay } from "redux-saga/effects";
 
 import {
   GET_POSTS,
@@ -28,58 +28,58 @@ import {
   getSearch,
 } from "../../helpers/backend_helper";
 
-const delay = (time: number) =>
-  new Promise((resolve, reject) => {
-    setTimeout(resolve, time * 1000);
-  });
+// const delay = (time: number) =>
+//   new Promise((resolve, reject) => {
+//     setTimeout(resolve, time * 1000);
+//   });
 
 function* onGetPosts(): any {
   try {
-    yield delay(1);
+    yield delay(1000);
     const response = yield call(getPosts);
     yield put(getPostsSuccess(response));
   } catch (error) {
-    yield put(getPostsError(error.response));
+    yield put(getPostsError(error.message));
   }
 }
 
 function* onGetComments({ payload: postId }: any): any {
   try {
-    yield delay(1);
+    yield delay(1000);
     const response = yield call(getPostComments, postId);
     yield put(getCommentsSuccess(response));
   } catch (error) {
-    yield put(getCommentsError(error.response));
+    yield put(getCommentsError(error.message));
   }
 }
 
 function* onGetUsers({ payload: id }: any): any {
   try {
-    yield delay(1);
+    yield delay(1000);
     const response = yield call(getUser, id);
     yield put(getUsersSuccess(response));
   } catch (error) {
-    yield put(getUsersError(error.response));
+    yield put(getUsersError(error.message));
   }
 }
 
 function* onGetUserPosts({ payload: userId }: any): any {
   try {
-    yield delay(1);
+    yield delay(1000);
     const response = yield call(getUserPosts, userId);
     yield put(getUsersPostsSuccess(response));
   } catch (error) {
-    yield put(getUsersPostsError(error.response));
+    yield put(getUsersPostsError(error.message));
   }
 }
 
 function* onGetSearch({ payload: search }: any): any {
   try {
-    yield delay(1);
+    yield delay(1000);
     const response = yield call(getSearch, search);
     yield put(getSearchSuccess(response));
   } catch (error) {
-    yield put(getSearchError(error.response));
+    yield put(getSearchError(error.message));
   }
 }
 
@@ -92,5 +92,5 @@ function* watchSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(watchSaga)]);
+  yield fork(watchSaga);
 }

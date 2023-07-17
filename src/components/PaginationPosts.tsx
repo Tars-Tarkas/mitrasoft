@@ -61,7 +61,7 @@ const PaginationPosts: React.FC<PaginationPostsType> = ({
   }
 
   return (
-    <Pagination className="d-flex justify-content-center" size="sm">
+    <Pagination className="d-flex justify-content-center pb-3">
       {items}
     </Pagination>
   );

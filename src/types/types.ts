@@ -7,7 +7,7 @@ export type initialStateType = {
   loadingComments: boolean;
   loadingUsers: boolean;
   loadingUsersPost: boolean;
-  error: boolean;
+  error: string;
 };
 
 export type PostsType = {

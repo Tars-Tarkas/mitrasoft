@@ -34,7 +34,7 @@ const CardUser: React.FC = (): JSX.Element => {
                   </Col>
                   <Col className="d-flex align-items-center text-center">
                     <Card.Title className="display-6 ">
-                      {name} {username}
+                      {name} (@{username})
                     </Card.Title>
                   </Col>
                 </Row>
